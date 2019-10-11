@@ -25,9 +25,9 @@ pipeline {
 
       stage('Build and Push Image') {
          steps {
-           sh 'scp -r . jenkins@54.88.136.69:/home/jenkins/docker/${WORKSPACE}'
+           sh 'scp -r ${WORKSPACE} jenkins@54.88.136.69:/home/jenkins/docker/${BUILD_ID}'
            sh 'ssh jenkins@54.88.136.69'
-           sh '/home/jenkins/docker/${WORKSPACE}'
+           sh '/home/jenkins/docker/${BUILD_ID}'
            sh 'docker image build -t ${REPOSITORY_TAG} .'
            sh 'exit'
          }
