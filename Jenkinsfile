@@ -46,7 +46,7 @@ pipeline {
       }
       stage('Deploy to Cluster') {
           steps {
-                    sh 'echo "Deploy to production is in pipeline'
+                    sh 'echo ''Deploy to production is in pipeline'''
           }
       }
    }
