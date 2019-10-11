@@ -44,10 +44,5 @@ pipeline {
            sh 'ssh jenkins@${DOCKER_HOST_IP} docker push ${DOCKERHUB_URL}/${DOCKER_PROJECT_NAME}/${SERVICE_NAME}:${BUILD_ID}'
          }
       }
-      stage('Deploy to Cluster') {
-          steps {
-                    sh 'echo ''Deploy to production is in pipeline'''
-          }
-      }
    }
 }
