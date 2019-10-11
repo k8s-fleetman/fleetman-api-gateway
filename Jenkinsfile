@@ -40,7 +40,7 @@ pipeline {
       
       stage('Push Image') {
          steps {
-           sh 'ssh jenkins@${DOCKER_HOST_IP} docker tag ${SERVICE_NAME}:${BUILD_ID} ${DOCKERHUB_URL}/${DOCKER_PROJECT_NAME}/${YOUR_DOCKERHUB_USERNAME}/${SERVICE_NAME}:${BUILD_ID}'
+           sh 'ssh jenkins@${DOCKER_HOST_IP} docker tag ${SERVICE_NAME}:${BUILD_ID} ${DOCKERHUB_URL}/${DOCKER_PROJECT_NAME}/${SERVICE_NAME}:${BUILD_ID}'
            sh 'ssh jenkins@${DOCKER_HOST_IP} docker push ${DOCKERHUB_URL}/${DOCKER_PROJECT_NAME}/${SERVICE_NAME}:${BUILD_ID}'
          }
       }
