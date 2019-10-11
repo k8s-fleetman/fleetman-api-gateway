@@ -22,15 +22,27 @@ pipeline {
             sh '''mvn clean package'''
          }
       }
-
-      stage('Build and Push Image') {
+      
+      stage('SonarQube') {
+         steps {
+            sh '''mvn sonar:sonar Dsonar.projectKey=api-gateway -Dsonar.host.url=http://sonarqube.eqslearning.com:9000 -Dsonar.login=6048d8ddd7bca6b0eb9051d5e899ae8ab07f0d45'''
+         }
+      }
+      stage('Build Image') {
          steps {
            sh 'scp -r ${WORKSPACE} jenkins@54.88.136.69:/home/jenkins/docker/${BUILD_ID}'
            sh 'ssh jenkins@54.88.136.69 docker image build -t ${REPOSITORY_TAG} /home/jenkins/docker/${BUILD_ID}'
            sh 'ssh jenkins@54.88.136.69 docker image ls'
+           
          }
       }
-
+      
+      stage('Push Image') {
+         steps {
+           sh 'ssh jenkins@54.88.136.69 docker tag ${SERVICE_NAME}:${BUILD_ID} ${DOCKERHUB_URL}/${ORGANIZATION_NAME}/${YOUR_DOCKERHUB_USERNAME}/${SERVICE_NAME}:${BUILD_ID}'
+           sh 'ssh jenkins@54.88.136.69 docker push ${DOCKERHUB_URL}/${ORGANIZATION_NAME}/${SERVICE_NAME}:${BUILD_ID}'
+         }
+      }
       stage('Deploy to Cluster') {
           steps {
                     sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
