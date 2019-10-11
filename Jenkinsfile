@@ -31,17 +31,17 @@ pipeline {
       }
       stage('Build Image') {
          steps {
-           sh 'scp -r ${WORKSPACE} jenkins@54.88.136.69:/home/jenkins/docker/${BUILD_ID}'
-           sh 'ssh jenkins@54.88.136.69 docker image build -t ${REPOSITORY_TAG} /home/jenkins/docker/${BUILD_ID}'
-           sh 'ssh jenkins@54.88.136.69 docker image ls'
+           sh 'scp -r ${WORKSPACE} jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}'
+           sh 'ssh jenkins@${DOCKER_HOST_IP} docker image build -t ${REPOSITORY_TAG} /home/jenkins/docker/${BUILD_ID}'
+           sh 'ssh jenkins@${DOCKER_HOST_IP} docker image ls'
            
          }
       }
       
       stage('Push Image') {
          steps {
-           sh 'ssh jenkins@54.88.136.69 docker tag ${REPOSITORY_TAG} ${DOCKERHUB_URL}/${ORGANIZATION_NAME}/${YOUR_DOCKERHUB_USERNAME}/${SERVICE_NAME}:${BUILD_ID}'
-           sh 'ssh jenkins@54.88.136.69 docker push ${DOCKERHUB_URL}/${ORGANIZATION_NAME}/${SERVICE_NAME}:${BUILD_ID}'
+           sh 'ssh jenkins@${DOCKER_HOST_IP} docker tag ${SERVICE_NAME}:${BUILD_ID} ${DOCKERHUB_URL}/${DOCKER_PROJECT_NAME}/${YOUR_DOCKERHUB_USERNAME}/${SERVICE_NAME}:${BUILD_ID}'
+           sh 'ssh jenkins@${DOCKER_HOST_IP} docker push ${DOCKERHUB_URL}/${DOCKER_PROJECT_NAME}/${SERVICE_NAME}:${BUILD_ID}'
          }
       }
       stage('Deploy to Cluster') {
