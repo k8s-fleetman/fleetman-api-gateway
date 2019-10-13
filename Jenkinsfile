@@ -44,13 +44,17 @@ pipeline {
          steps {
            sh 'ssh jenkins@${DOCKER_HOST_IP} docker tag ${IMAGE_TAG} ${REPOSITORY_TAG}'
            sh 'ssh jenkins@${DOCKER_HOST_IP} docker push ${REPOSITORY_TAG}'
+           sh 'scp -r deploy.yaml jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}/deploy.yaml'
          }
       }
       
       stage('Deploy to Cluster') {
           steps {
-            sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
-            sh '''echo Still working on it'''
+            sh 'sed -i 's@REPOSITORY_TAG@'"${REPOSITORY_TAG}"'@' deployment.yaml'
+            sh 'cat deployment.yaml | grep ${REPOSITORY_TAG}'
+            sh 'kubectl apply -f deployment.yaml'
+            //sh 'scp -r deploy.yaml jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}/deploy.yaml'
+            //sh 'ssh jenkins@${DOCKER_HOST_IP} kubectl apply -f /home/jenkins/docker/${BUILD_ID}/deploy.yaml '
           }
       }
    }
