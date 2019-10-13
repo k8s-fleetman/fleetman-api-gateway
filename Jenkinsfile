@@ -51,7 +51,7 @@ pipeline {
           steps {
             sh './configdeployment.sh'
             sh 'cat deployment.yaml | grep ${REPOSITORY_TAG}'
-            sh 'kubectl apply -f deployment.yaml'
+            sh 'kubectl apply -f deploy.yaml'
             //sh 'scp -r deploy.yaml jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}/deploy.yaml'
             //sh 'ssh jenkins@${DOCKER_HOST_IP} kubectl apply -f /home/jenkins/docker/${BUILD_ID}/deploy.yaml '
           }
