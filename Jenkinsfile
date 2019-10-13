@@ -47,11 +47,12 @@ pipeline {
       
       stage('Deploy to Cluster') {
           steps {
-            sh 'chmod +x configdeployment.sh'
-            sh 'cat deployment.yaml | grep REPOSITORY_TAG'
-            sh './configdeployment.sh'
-            sh 'cat deployment.yaml | grep image'
-            sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
+            def updatedDeployment = new File('deployment.yaml')
+            def newConfig = file.updatedDeployment.replace('REPOSITORY_TAG', '${REPOSITORY_TAG}')
+            file.text = newConfig
+            sh 'mv updateddeployment updateddeployment.yaml'
+            sh 'kubectl apply -f updatedDeployment.yaml'
+            def updateddeployment.text
             //sh 'scp -r deploy.yaml jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}/deploy.yaml'
             //sh 'ssh jenkins@${DOCKER_HOST_IP} kubectl apply -f /home/jenkins/docker/${BUILD_ID}/deploy.yaml '
           }
