@@ -8,7 +8,7 @@ pipeline {
 
      SERVICE_NAME = "fleetman-api-gateway"
      IMAGE_TAG="${SERVICE_NAME}:${BUILD_ID}"
-     REPOSITORY_TAG="${DOCKERHUB_URL}/${DOCKER_PROJECT_NAME}/${SERVICE_NAME}:${BUILD_ID}"
+     REPOSITORY_TAG="${DOCKERHUB_URL}/${IMAGE_TAG}"
    }
 
    stages {
