@@ -7,8 +7,7 @@ pipeline {
      // YOUR_DOCKERHUB_USERNAME (it doesn't matter if you don't have one)
 
      SERVICE_NAME = "fleetman-api-gateway"
-     IMAGE_TAG="${SERVICE_NAME}:${BUILD_ID}"
-     REPOSITORY_TAG="${DOCKERHUB_URL}/${IMAGE_TAG}"
+     REPOSITORY_TAG="${DOCKERHUB_URL}/${SERVICE_NAME}:${BUILD_ID}"
    }
 
    stages {
@@ -48,11 +47,10 @@ pipeline {
       
       stage('Deploy to Cluster') {
           steps {
-            def updatedDeployment = new File('deployment.yaml')
-            def newConfig = file.updatedDeployment.replace('REPOSITORY_TAG', '${REPOSITORY_TAG}')
-            file.text = newConfig
-            sh 'mv updateddeployment updateddeployment.yaml'
-            sh 'kubectl apply -f updatedDeployment.yaml'
+            sh 'cat deploy.yaml'
+            sh "sed -i 's+REPOSITORY_TAG+'"${REPOSITORY_TAG}"'+' deploy.yaml"
+            sh 'cat deploy.yaml'
+            sh 'kubectl apply -f deploy.yaml
             def updateddeployment.text
             //sh 'scp -r deploy.yaml jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}/deploy.yaml'
             //sh 'ssh jenkins@${DOCKER_HOST_IP} kubectl apply -f /home/jenkins/docker/${BUILD_ID}/deploy.yaml '
