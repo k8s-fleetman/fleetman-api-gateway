@@ -50,8 +50,7 @@ pipeline {
             sh 'cat deploy.yaml'
             sh "sed -i 's+REPOSITORY_TAG+'"${REPOSITORY_TAG}"'+' deploy.yaml"
             sh 'cat deploy.yaml'
-            sh 'kubectl apply -f deploy.yaml
-            def updateddeployment.text
+            sh 'kubectl apply -f deploy.yaml'
             //sh 'scp -r deploy.yaml jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}/deploy.yaml'
             //sh 'ssh jenkins@${DOCKER_HOST_IP} kubectl apply -f /home/jenkins/docker/${BUILD_ID}/deploy.yaml '
           }
