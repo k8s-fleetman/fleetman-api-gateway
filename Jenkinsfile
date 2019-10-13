@@ -51,7 +51,7 @@ pipeline {
             sh 'cat deployment.yaml | grep REPOSITORY_TAG'
             //sh './configdeployment.sh'
             //sh 'cat deployment.yaml | grep ${REPOSITORY_TAG}'
-            sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -
+            sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
             //sh 'scp -r deploy.yaml jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}/deploy.yaml'
             //sh 'ssh jenkins@${DOCKER_HOST_IP} kubectl apply -f /home/jenkins/docker/${BUILD_ID}/deploy.yaml '
           }
