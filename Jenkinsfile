@@ -7,6 +7,7 @@ pipeline {
      // YOUR_DOCKERHUB_USERNAME (it doesn't matter if you don't have one)
 
      SERVICE_NAME = "fleetman-api-gateway"
+     IMAGE_TAG="${SERVICE_NAME}:${BUILD_ID}"
      REPOSITORY_TAG="${DOCKERHUB_URL}/${IMAGE_TAG}"
    }
 
