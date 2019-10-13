@@ -49,6 +49,7 @@ pipeline {
       
       stage('Deploy to Cluster') {
           steps {
+            sh 'chmod +x configdeployment.sh'
             sh './configdeployment.sh'
             sh 'cat deployment.yaml | grep ${REPOSITORY_TAG}'
             sh 'kubectl apply -f deploy.yaml'
