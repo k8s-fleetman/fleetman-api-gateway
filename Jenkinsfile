@@ -48,7 +48,7 @@ pipeline {
       stage('Deploy to Cluster') {
           steps {
             sh 'cat deploy.yaml'
-            sh "`sed -i 's+REPOSITORY_TAG+'"${REPOSITORY_TAG}"'+' deploy.yaml`"
+            sh """sed -i 's+REPOSITORY_TAG+'"${REPOSITORY_TAG}"'+' deploy.yaml"""
             sh 'cat deploy.yaml'
             sh 'kubectl apply -f deploy.yaml'
             //sh 'scp -r deploy.yaml jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}/deploy.yaml'
