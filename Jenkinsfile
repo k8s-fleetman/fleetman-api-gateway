@@ -25,7 +25,7 @@ pipeline {
       
       stage('SonarQube') {
          steps {
-            mvn sonar:sonar -Dsonar.projectKey=fleet-api -Dsonar.host.url=http://sonarqube.eqslearning.com:9000 -Dsonar.login=0dbf2e5a9997ba0c25e397e4144c0ff267757061
+            sh '''mvn sonar:sonar -Dsonar.projectKey=fleet-api -Dsonar.host.url=http://sonarqube.eqslearning.com:9000 -Dsonar.login=0dbf2e5a9997ba0c25e397e4144c0ff267757061'''
          }
       }
       stage('Build Image') {
@@ -34,7 +34,6 @@ pipeline {
            sh 'ssh jenkins@${DOCKER_HOST_IP} docker image build -t ${REPOSITORY_TAG} /home/jenkins/docker/${BUILD_ID}'
            sh 'ssh jenkins@${DOCKER_HOST_IP} docker image ls'
            sh 'ssh jenkins@${DOCKER_HOST_IP} rm -rf /home/jenkins/docker/${BUILD_ID}'
-           
          }
       }
       
@@ -50,8 +49,6 @@ pipeline {
             sh """sed -i 's+REPOSITORY_TAG+'"${REPOSITORY_TAG}"'+' deploy.yaml"""
             sh 'cat deploy.yaml'
             sh 'kubectl apply -f deploy.yaml'
-            //sh 'scp -r deploy.yaml jenkins@${DOCKER_HOST_IP}:/home/jenkins/docker/${BUILD_ID}/deploy.yaml'
-            //sh 'ssh jenkins@${DOCKER_HOST_IP} kubectl apply -f /home/jenkins/docker/${BUILD_ID}/deploy.yaml '
           }
       }
    }
